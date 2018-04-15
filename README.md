@@ -1,5 +1,7 @@
 # phaser_games
 
+__While developing...__
+
 - Install inotify-tools for auto building
 ```
 sudo apt-get install -y inotify-tools
