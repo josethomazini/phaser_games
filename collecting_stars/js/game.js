@@ -3,7 +3,7 @@ let config = {
     width: 640,
     height: 360,
     parent: 'phaser-app',
-    scenes: [load, load, load]
+    scene: [boot, load]
 };
  
 let game = new Phaser.Game(config);
