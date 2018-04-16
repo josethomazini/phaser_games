@@ -5,6 +5,7 @@ import hashlib
 import os
 
 MAIN_GAME_FILE_NAME = 'game.js'
+SERVICES_FILE_NAME = 'services.js'
 
 TEMPLATES_FOLDER = '../templates/'
 MAIN_GAME_TEMPLATE = TEMPLATES_FOLDER + MAIN_GAME_FILE_NAME
@@ -12,10 +13,11 @@ INDEX_TEMPLATE = TEMPLATES_FOLDER + 'index.html'
 BUFFER_SIZE = 65536
 
 JS_FOLDER = 'js/'
-STATE_JS_FOLDER = JS_FOLDER + 'state/'
+SCENE_JS_FOLDER = JS_FOLDER + 'scene/'
 CSS_FOLDER = 'css/'
 
 MAIN_GAME_FILE_PATH = JS_FOLDER + MAIN_GAME_FILE_NAME
+SERVICES_FILE_PATH = JS_FOLDER + SERVICES_FILE_NAME
 
 class Builder:
     def __init__(self):
@@ -40,13 +42,16 @@ class Builder:
         # MAIN GAME
         self._calc_hash_from_file(MAIN_GAME_FILE_PATH)
 
-        # STATES
+        # SERVICES
+        self._calc_hash_from_file(SERVICES_FILE_PATH)
+
+        # SCENES
         for js_file_name in [
-            f for f in os.listdir(STATE_JS_FOLDER) if
-                os.path.isfile(os.path.join(STATE_JS_FOLDER, f))
+            f for f in os.listdir(SCENE_JS_FOLDER) if
+                os.path.isfile(os.path.join(SCENE_JS_FOLDER, f))
         ]:
-            state_path = STATE_JS_FOLDER + js_file_name
-            self._calc_hash_from_file(state_path)
+            scene_path = SCENE_JS_FOLDER + js_file_name
+            self._calc_hash_from_file(scene_path)
 
         # STYLES
         for css_file_name in [
@@ -56,21 +61,21 @@ class Builder:
             style_path = CSS_FOLDER + css_file_name
             self._calc_hash_from_file(style_path)
 
-    def _set_states_js(self, text):
+    def _set_scenes_js(self, text):
         scripts = []
         for js_file_name in [
-            f for f in os.listdir(STATE_JS_FOLDER) if (
-                os.path.isfile(os.path.join(STATE_JS_FOLDER, f))
+            f for f in os.listdir(SCENE_JS_FOLDER) if (
+                os.path.isfile(os.path.join(SCENE_JS_FOLDER, f))
             )
         ]:
-            state_path = STATE_JS_FOLDER + js_file_name
+            scene_path = SCENE_JS_FOLDER + js_file_name
             scripts.append(
-                '<script src="' + state_path + '?sha1=' +
-                self.hashes[state_path] + '"></script>'
+                '<script src="' + scene_path + '?sha1=' +
+                self.hashes[scene_path] + '"></script>'
             )
         return text.replace(
-            '{{ states_js }}',
-            ''.join(scripts)
+            '{{ scenes_js }}',
+            '\n\t\t'.join(scripts)
         )
 
     def _set_styles(self, text):
@@ -99,24 +104,35 @@ class Builder:
                 '"></script>'
         )
 
-    def _set_state_list(self, text):
-        # load tem que ser o primeiro
-        for js_file_name in [
-            f for f in os.listdir(STATE_JS_FOLDER) if (
-                os.path.isfile(os.path.join(STATE_JS_FOLDER, f))
-            )
-        ]:
-            state_path = STATE_JS_FOLDER + js_file_name
+    def _set_services_js(self, text):
         return text.replace(
-            '{{ state_list }}',
-            '[load]'
+            '{{ services_js }}',
+            '<script src="' + SERVICES_FILE_PATH +
+                '?sha1=' +
+                self.hashes[SERVICES_FILE_PATH] +
+                '"></script>'
+        )
+
+    def _set_scenes_list(self, text):
+        classes = ['boot']
+        for js_file_name in [
+            f for f in os.listdir(SCENE_JS_FOLDER) if (
+                os.path.isfile(os.path.join(SCENE_JS_FOLDER, f))
+            ) if f != 'boot.js'
+        ]:
+            class_name = js_file_name.replace('.js', '')
+            classes.append(class_name)
+
+        return text.replace(
+            '{{ scene_list }}',
+            '[%s]' % ', '.join(classes)
         )
 
     def _render_main_game(self):
         with codecs.open(MAIN_GAME_TEMPLATE, 'r', 'utf-8') as src:
             with codecs.open(MAIN_GAME_FILE_PATH, 'w', 'utf-8') as dest:
                 text = src.read()
-                text = self._set_state_list(text)
+                text = self._set_scenes_list(text)
                 dest.write(text)
 
     def _render_index(self):
@@ -124,7 +140,8 @@ class Builder:
             with codecs.open('index.html', 'w', 'utf-8') as dest:
                 text = src.read()
                 text = self._set_styles(text)
-                text = self._set_states_js(text)
+                text = self._set_scenes_js(text)
+                text = self._set_services_js(text)
                 text = self._set_game_js(text)
                 dest.write(text)
 
