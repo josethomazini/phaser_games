@@ -5,5 +5,5 @@ boot.preload = function() {
 }
 
 boot.create = function() {
-    this.scene.launch('load');
+    change_scene(this, 'load');
 }
