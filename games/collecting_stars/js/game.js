@@ -3,7 +3,7 @@ let config = {
     width: 800,
     height: 600,
     parent: 'phaser-app',
-    scene: {{ scene_list }}
+    scene: [boot, load]
 };
 
 window.onload = function() {

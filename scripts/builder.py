@@ -7,7 +7,7 @@ import os
 MAIN_GAME_FILE_NAME = 'game.js'
 SERVICES_FILE_NAME = 'services.js'
 
-TEMPLATES_FOLDER = '../templates/'
+TEMPLATES_FOLDER = '../../templates/'
 MAIN_GAME_TEMPLATE = TEMPLATES_FOLDER + MAIN_GAME_FILE_NAME
 INDEX_TEMPLATE = TEMPLATES_FOLDER + 'index.html'
 BUFFER_SIZE = 65536
@@ -75,7 +75,7 @@ class Builder:
             )
         return text.replace(
             '{{ scenes_js }}',
-            '\n\t\t'.join(scripts)
+            ''.join(scripts)
         )
 
     def _set_styles(self, text):

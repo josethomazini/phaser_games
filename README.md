@@ -15,17 +15,17 @@ sudo apt-get install -y inotify-tools
 
 - Access a game folder
 ```
-cd phaser_games/collecting_stars/
+cd phaser_games/games/collecting_stars/
 ```
 
 - Start the observer script
 ```
-../startobserver.py
+../../scripts/startobserver.py
 ```
 
 - Open the second terminal
 
 - Start the server script
 ```
-../runserver.py
+../../scripts/runserver.py
 ```

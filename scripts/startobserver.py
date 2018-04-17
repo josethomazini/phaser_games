@@ -4,7 +4,7 @@ import os
 
 import builder
 
-RUN_INOTIFY_CMD = 'while inotifywait -r . -e modify -e move -e create -e delete; do ../builder.py; done'
+RUN_INOTIFY_CMD = 'while inotifywait -r . -e modify -e move -e create -e delete; do ../../scripts/builder.py; done'
 
 
 class StartObserver:
