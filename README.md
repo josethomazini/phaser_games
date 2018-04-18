@@ -1,4 +1,4 @@
-# phaser_games
+# Phaser Games
 
 __Where is it?__
 
