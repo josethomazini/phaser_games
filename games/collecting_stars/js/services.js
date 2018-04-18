@@ -1,13 +1,13 @@
-document.title = "Collecting Stars";
+function set_title() {
+    document.title = config.game_name;
+}
 
-function make_loading_text(obj) {
-    let x = obj.sys.game.config.width / 2;
-    let y = obj.sys.game.config.height / 3;
-
-    let text = obj.add.text(
-        x, y, 'Loading',
-        {font: '50px Arial', fill: '#fff'}
-    );
-
-    text.setOrigin(0, 0);
+function update_game_config(config) {
+    config.backgroundColor = '#2d2d2d';
+    config.game_name = 'Collecting Stars';
+    config.height = 600;
+    config.parent = 'phaser-app';
+    config.pixelArt = true;
+    config.type = Phaser.AUTO;
+    config.width = 800;
 }
