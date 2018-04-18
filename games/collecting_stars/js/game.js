@@ -1,11 +1,15 @@
+// This file was auto-generated. Do not edit it!
+
+let game = null;
+
 let config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    parent: 'phaser-app',
-    scene: [boot, load]
+    scene: [load, stage]
 };
 
+update_game_config(config);
+
+set_title();
+
 window.onload = function() {
-    let game = new Phaser.Game(config);
+    game = new Phaser.Game(config);
 };
