@@ -1,7 +1,3 @@
-function set_page_title() {
-    document.title = config.game_name;
-}
-
 function update_game_config(config) {
     config.backgroundColor = '#2d2d2d';
     config.game_name = 'Collecting Stars';

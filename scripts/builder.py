@@ -7,6 +7,7 @@ import os
 MAIN_GAME_FILE_NAME = 'game.js'
 CONFIGS_FILE_NAME = 'configs.js'
 ASSETS_FILE_NAME = 'assets.js'
+ACTORS_FILE_NAME = 'actors.js'
 
 TEMPLATES_FOLDER = '../../templates/'
 MAIN_GAME_TEMPLATE = TEMPLATES_FOLDER + MAIN_GAME_FILE_NAME
@@ -25,6 +26,7 @@ SCENE_JS_FOLDER = JS_FOLDER + 'scene/'
 MAIN_GAME_FILE_PATH = JS_FOLDER + MAIN_GAME_FILE_NAME
 CONFIGS_FILE_PATH = JS_FOLDER + CONFIGS_FILE_NAME
 ASSETS_FILE_PATH = JS_FOLDER + ASSETS_FILE_NAME
+ACTORS_FILE_PATH = JS_FOLDER + ACTORS_FILE_NAME
 
 JS_MSG_DO_NOT_EDIT = '// This file was auto-generated. Do not edit it!\n\n'
 HTML_MSG_DO_NOT_EDIT = '<!-- This file was auto-generated. Do not edit it! -->'
@@ -52,6 +54,9 @@ class Builder:
 
         # ASSETS
         self._calc_hash_from_file(ASSETS_FILE_PATH)
+
+        # ASSETS
+        self._calc_hash_from_file(ACTORS_FILE_PATH)
 
         # SCENES
         for js_file_name in [
@@ -111,6 +116,7 @@ class Builder:
                 text = self._set_styles(text)
                 text = self._set_scenes_js(text)
                 text = self._set_assets_js(text)
+                text = self._set_actors_js(text)
                 text = self._set_configs_js(text)
                 text = self._set_game_js(text)
                 dest.write(HTML_MSG_DO_NOT_EDIT)
@@ -160,6 +166,15 @@ class Builder:
             '<script src="' + MAIN_GAME_FILE_PATH +
                 '?sha1=' +
                 self.hashes[MAIN_GAME_FILE_PATH] +
+                '"></script>'
+        )
+
+    def _set_actors_js(self, text):
+        return text.replace(
+            '{{ actors_js }}',
+            '<script src="' + ACTORS_FILE_PATH +
+                '?sha1=' +
+                self.hashes[ACTORS_FILE_PATH] +
                 '"></script>'
         )
 

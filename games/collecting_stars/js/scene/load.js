@@ -3,7 +3,7 @@ let load = new Phaser.Scene('load');
 load.preload = function() {
     this.make_loading_text();
     this.start_progress_loader();
-    this.load_assets();
+    load_assets(this);
 };
 
 load.create = function() {
@@ -34,14 +34,7 @@ load.start_progress_loader = function() {
 
     });
 
-    this.load.on('complete', function () {
+    this.load.on('complete', function() {
         progress.destroy();
     });
 };
-
-load.load_assets = function() {
-    load_images(this);
-    load_spritesheets(this);
-    load_audios(this);
-    load_bitmap_font(this);
-}

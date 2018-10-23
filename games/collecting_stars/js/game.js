@@ -8,7 +8,7 @@ let config = {
 
 update_game_config(config);
 
-set_page_title();
+document.title = config.game_name;
 
 window.onload = function() {
     game = new Phaser.Game(config);
