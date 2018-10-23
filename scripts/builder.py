@@ -5,7 +5,7 @@ import hashlib
 import os
 
 MAIN_GAME_FILE_NAME = 'game.js'
-SERVICES_FILE_NAME = 'services.js'
+CONFIGS_FILE_NAME = 'configs.js'
 ASSETS_FILE_NAME = 'assets.js'
 
 TEMPLATES_FOLDER = '../../templates/'
@@ -23,7 +23,7 @@ JS_FOLDER = 'js/'
 SCENE_JS_FOLDER = JS_FOLDER + 'scene/'
 
 MAIN_GAME_FILE_PATH = JS_FOLDER + MAIN_GAME_FILE_NAME
-SERVICES_FILE_PATH = JS_FOLDER + SERVICES_FILE_NAME
+CONFIGS_FILE_PATH = JS_FOLDER + CONFIGS_FILE_NAME
 ASSETS_FILE_PATH = JS_FOLDER + ASSETS_FILE_NAME
 
 JS_MSG_DO_NOT_EDIT = '// This file was auto-generated. Do not edit it!\n\n'
@@ -47,8 +47,8 @@ class Builder:
         # MAIN GAME
         self._calc_hash_from_file(MAIN_GAME_FILE_PATH)
 
-        # SERVICES
-        self._calc_hash_from_file(SERVICES_FILE_PATH)
+        # CONFIGS
+        self._calc_hash_from_file(CONFIGS_FILE_PATH)
 
         # ASSETS
         self._calc_hash_from_file(ASSETS_FILE_PATH)
@@ -111,7 +111,7 @@ class Builder:
                 text = self._set_styles(text)
                 text = self._set_scenes_js(text)
                 text = self._set_assets_js(text)
-                text = self._set_services_js(text)
+                text = self._set_configs_js(text)
                 text = self._set_game_js(text)
                 dest.write(HTML_MSG_DO_NOT_EDIT)
                 dest.write(text)
@@ -172,12 +172,12 @@ class Builder:
                 '"></script>'
         )
 
-    def _set_services_js(self, text):
+    def _set_configs_js(self, text):
         return text.replace(
-            '{{ services_js }}',
-            '<script src="' + SERVICES_FILE_PATH +
+            '{{ configs_js }}',
+            '<script src="' + CONFIGS_FILE_PATH +
                 '?sha1=' +
-                self.hashes[SERVICES_FILE_PATH] +
+                self.hashes[CONFIGS_FILE_PATH] +
                 '"></script>'
         )
 
@@ -213,7 +213,7 @@ class Builder:
         ]:
             image_name = image_file_name[0:image_file_name.rindex('.')]
 
-            statement = "\n\tobj.load.image('%s', '%s%s');" % (
+            statement = "\n    scene.load.image('%s', '%s%s');" % (
                 image_name,
                 IMAGE_FOLDER,
                 image_file_name,
@@ -240,7 +240,7 @@ class Builder:
             width = spritesheet_name[first_opening_bracket + 1:between_brackets]
             height = spritesheet_name[between_brackets + 2:-1]
 
-            statement = "\n\tobj.load.spritesheet('%s', '%s%s', {frameWidth: %s, frameHeight: %s});" % (
+            statement = "\n    scene.load.spritesheet('%s', '%s%s', {frameWidth: %s, frameHeight: %s});" % (
                 spritesheet_name,
                 SPRITESHEET_FOLDER,
                 spritesheet_file_name,
@@ -263,7 +263,7 @@ class Builder:
         ]:
             audio_name = audio_file_name[0:audio_file_name.rindex('.')]
 
-            statement = "\n\tobj.load.audio('%s', '%s%s');" % (
+            statement = "\n    scene.load.audio('%s', '%s%s');" % (
                 audio_name,
                 AUDIO_FOLDER,
                 audio_file_name,
@@ -297,7 +297,7 @@ class Builder:
                     font_file_name,
                 )
 
-        statement = "\n\tobj.load.bitmapFont('%s', '%s', '%s');" % (
+        statement = "\n    scene.load.bitmapFont('%s', '%s', '%s');" % (
             font_name,
             png_file_name,
             xml_file_name,

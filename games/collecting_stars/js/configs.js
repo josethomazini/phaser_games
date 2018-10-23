@@ -1,4 +1,4 @@
-function set_title() {
+function set_page_title() {
     document.title = config.game_name;
 }
 

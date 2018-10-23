@@ -6,7 +6,7 @@ let config = {
 
 update_game_config(config);
 
-set_title();
+set_page_title();
 
 window.onload = function() {
     game = new Phaser.Game(config);
